@@ -74,13 +74,23 @@ int main(int argc, char const *argv[]) {
 
 
   	A = (double *) malloc(n * sizeof(double));
+	printf("INSIRA UM VALOR ENTRE [0 - INFINITO]\n");
+  	while(continuar){
+  	printf("\nINSIRA O %dº VALOR DE A: ",indiceInserirA);
+    scanf("%lf",&a_aux);
 
-  	for(j=1; j<=n; j++) {
-  	  printf("\nINSIRA A AMPLITUDE %d\n",j);
-  	  scanf("%lf",&a_aux);
-  	  A[j-1] = a_aux;
-  	}
+    if (validarA(a_aux)){
+    	A[indiceInserirA-1] = a_aux;
+    	indiceInserirA++;
 
+    	if(indiceInserirA == n + 1){
+    		continuar = 0;
+    	}
+    }else{
+    	printf("INSIRA UM VALOR ENTRE [0 - INFINITO]\n");
+    }  
+
+  }  
   //exibindo A
   	printf("\nVETOR DE AMPLITUDES A:\n\n  A = [");
   	for(j=1;j<=n-1;j++){
