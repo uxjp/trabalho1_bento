@@ -31,11 +31,14 @@ double call_metodo_secante(double a_funcao, double a_intervalo, double b_interva
 //     resolver_f
 double numerador_secante(double a_funcao, double a_intervalo, double b_intervalo);
 double denominador_secante(double a_funcao, double a_intervalo, double b_intervalo);
+int validarA(double a);
 
 
 int main(int argc, char const *argv[]) {	
 
   	double RT[3] = {0, 0, 0};
+  	int continuar = 1;
+    int indiceInserirA = 1;
 
 
   	printf("DADO MOVIMENTO FÍSICO PELA EQUACAO:\n  f(d) = a*e^d - 4*d^2\n\n a: AMPLITUDE\n d: DESLOCAMENTO\n E: ERRO MAXIMO\n\n\n");
@@ -114,6 +117,17 @@ int main(int argc, char const *argv[]) {
 	return 0;
 
 }
+
+int validarA(double a){
+
+	if(a < 0){
+		return 0;
+	}
+
+	return 1;
+}
+
+
 
 void call_metodos(double a_funcao, double E, double * R) {	
 
