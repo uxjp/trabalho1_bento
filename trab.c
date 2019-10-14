@@ -181,7 +181,7 @@ double call_newton_raphson(double a_funcao, double raiz0, double E) {
 	double f, f_linha, err, x_anterio, x_atual;
 	int k = 1;
   	int i=0;
-
+	
 	f = resolver_f(a_funcao, raiz0);
 	f_linha = resolver_f_linha(a_funcao, raiz0);
 	x_atual = newton_raphson(raiz0, f, f_linha);
@@ -189,21 +189,19 @@ double call_newton_raphson(double a_funcao, double raiz0, double E) {
 	
   	printf("x%d = %0.20lf f(x%d) = %0.20lf\n",i,raiz0,i,f);
 
-	while(err > E || fabs(f) > E) {	
-    i++;
-
-
+	while((err > E || fabs(f) > E) && i < 99) {	
+    		i++;
 		x_anterio = x_atual;
 		f = resolver_f(a_funcao, x_anterio);
 		f_linha = resolver_f_linha(a_funcao, x_anterio);
 		x_atual = newton_raphson(x_anterio, f, f_linha);		
 		err = erro(x_atual, x_anterio);
 
-    	printf("x%d = %0.20lf f(x%d) = %0.20lf\n", i, x_anterio, i, f);	
+	    	printf("x%d = %0.20lf f(x%d) = %0.20lf\n", i, x_anterio, i, f);	
 		k++;
 	}
 
-
+	if (i == 99) printf("\nERRO: O NUMERO MAXIMO DE ITERAÇÕES FOI EXCEDIDA\n");
   	f = resolver_f(a_funcao, x_atual);
   	printf("x%d = %0.20lf f(x%d) = %0.20lf\n\n",i+1,x_atual,i+1,f);	
 
@@ -234,22 +232,21 @@ double call_newton_raphson_modificado(double a_funcao, double raiz0, double E) {
 
     printf("x%d = %0.20lf f(x%d) = %0.20lf\n",i,raiz0,i,f);
 
-	while(err > E || fabs(f) > E){			
-        i++;	
+	while((err > E || fabs(f) > E) && k < 99){			
+        	i++;	
 
 		x_anterio = x_atual;
 		f = resolver_f(a_funcao, x_anterio);
 		x_atual = newton_raphson(x_anterio, f, f_linha);		
 		err = erro(x_atual, x_anterio);
 
-
-        printf("x%d = %0.20lf f(x%d) = %0.20lf\n",i,x_anterio,i,f);
+		printf("x%d = %0.20lf f(x%d) = %0.20lf\n",i,x_anterio,i,f);
 		k++;
 	}
 
-
-    f = resolver_f(a_funcao, x_atual);
-    printf("x%d = %0.20lf f(x%d) = %0.20lf\n\n",i+1,x_atual,i+1,f);	
+	if (i == 99) printf("\nERRO: O NUMERO MAXIMO DE ITERAÇÕES FOI EXCEDIDA\n");
+	f = resolver_f(a_funcao, x_atual);
+    	printf("x%d = %0.20lf f(x%d) = %0.20lf\n\n",i+1,x_atual,i+1,f);	
 
 	return x_atual;
 }
@@ -261,7 +258,7 @@ double call_metodo_secante(double a_funcao, double a_intervalo, double b_interva
 	printf("\n=========== EXECUCAO SECANTE ===========\n\n\n");
 
 	int k = 1;
-    int i = 0;
+    	int i = 0;
 	double x_anterio, x_atual,err,f;
 
 	err = erro(a_intervalo,b_intervalo);
@@ -273,25 +270,25 @@ double call_metodo_secante(double a_funcao, double a_intervalo, double b_interva
 	printf("x%d = %0.20lf f(x%d) = %0.20lf\n",i,b_intervalo,i,f);
 	i++;
 
-	while(err > E || fabs(f) > E) {
-    	i++;
-
+	while((err > E || fabs(f) > E) && k < 99) {
+	    	i++;
 
 		x_atual = (numerador_secante(a_funcao, a_intervalo, b_intervalo) / 
 			denominador_secante(a_funcao, a_intervalo, b_intervalo));
 
-    a_intervalo = b_intervalo;
-	b_intervalo = x_atual;
+    		a_intervalo = b_intervalo;
+		b_intervalo = x_atual;
 
-	k++;
+		k++;
 	
-	err = erro(a_intervalo, b_intervalo);
+		err = erro(a_intervalo, b_intervalo);
 
-    f = resolver_f(a_funcao, x_atual);
-    printf("x%d = %0.20lf f(x%d) = %0.20lf\n",i,x_atual,i,f);
+    		f = resolver_f(a_funcao, x_atual);
+    		printf("x%d = %0.20lf f(x%d) = %0.20lf\n",i,x_atual,i,f);
 	}
 
-
+	if (i == 99) printf("\nERRO: O NUMERO MAXIMO DE ITERAÇÕES FOI EXCEDIDA\n");
+	
 	return x_atual;
 }
 
