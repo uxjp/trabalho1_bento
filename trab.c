@@ -132,6 +132,7 @@ int validarA(double a){
 void call_metodos(double a_funcao, double E, double * R) {	
 
 	double a, b, isolamento;
+	a = 0;
 	b = 0;
 
 
