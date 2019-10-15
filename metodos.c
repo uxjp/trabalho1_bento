@@ -12,32 +12,42 @@ int validarA(double a){
 	return 1;
 }
 
-void call_metodos(double a_funcao, double E, double * R) {	
+void call_metodos(double a_funcao, double E, double * R, int* I, double * ER) {	
 
 	double a, b, isolamento;
 	a = 0;
 	b = 0;
-
+  int k0[1] = {0};
+  int k1[1] = {0};
+  int k2[1] = {0};
+  double er0[1] = {0};
+  double er1[1] = {0};
+  double er2[1] = {0};
 
 	isolamento = call_isolamento(a_funcao, &a, &b);
 	printf("\n\n a=%lf,isolamento=%lf \n\n",a_funcao,isolamento);
 
  
-	R[0] = call_newton_raphson(a_funcao, isolamento, E);
+	R[0] = call_newton_raphson(a_funcao, isolamento, E, k0, er0);
 	printf("RESULTADO NEWTON RAPHSON = %0.20lf\n\n========================================\n\n\n", R[0]);
+  I[0] = k0[0];
+  ER[0] = er0[0];
 
 
-	R[1] = call_newton_raphson_modificado(a_funcao, isolamento, E);
+	R[1] = call_newton_raphson_modificado(a_funcao, isolamento, E, k1, er1);
 	printf("RESULTADO NEWTON RAPHSON MODIFICADO = %0.20lf\n\n========================================\n\n\n", R[1]);
+  I[1] = k1[0];
+  ER[1] = er1[0];
 
-
-	R[2] = call_metodo_secante(a_funcao, a, b, E);
-	printf("\nRESULTADO SECANTE = %0.20lf\n\n========================================\n\n\n", R[2]);	
+	R[2] = call_metodo_secante(a_funcao, a, b, E, k2, er2);
+	printf("\nRESULTADO SECANTE = %0.20lf\n\n========================================\n\n\n", R[2]);
+  I[2] = k2[0];	
+  ER[2] = er2[0];
 
 }
 
 // ---------------------  Funçoes para Metodo Newton Raphson
-double call_newton_raphson(double a_funcao, double raiz0, double E) {
+double call_newton_raphson(double a_funcao, double raiz0, double E, int* K, double * ER) {
 
   	printf("\n======== EXECUCAO NEWTON RAPHSON ========\n\n\n");
 
@@ -64,9 +74,14 @@ double call_newton_raphson(double a_funcao, double raiz0, double E) {
 		k++;
 	}
 
-	if (i == 99) printf("\nERRO: O NUMERO MAXIMO DE ITERAÇÕES FOI EXCEDIDA\n");
-  	f = resolver_f(a_funcao, x_atual);
-  	printf("x%d = %0.20lf f(x%d) = %0.20lf\n\n",i+1,x_atual,i+1,f);	
+  K[0] = k+1; 
+
+	if (k == 99) printf("\nO NUMERO MAXIMO DE ITERAÇÕES FOI EXCEDIDA\n\n");
+
+  f = resolver_f(a_funcao, x_atual);
+  printf("x%d = %0.20lf f(x%d) = %0.20lf\n\n",i+1,x_atual,i+1,f);
+  //printf("Erro Relativo: %0.20lf\n\n",err/x_atual);	
+  ER[0] = err/x_atual;
 
 	return x_atual;
 }
@@ -80,7 +95,7 @@ double newton_raphson(double x_barra, double f, double f_linha) {
 
 
 //  ---------------------  Funçoes para Metodo Newton Raphson MODIFICADO  ----------
-double call_newton_raphson_modificado(double a_funcao, double raiz0, double E) {	
+double call_newton_raphson_modificado(double a_funcao, double raiz0, double E, int* K, double* ER) {	
 
     printf("\n=== EXECUCAO NEWTON RAPHSON MODIFICADO ===\n\n\n");
 
@@ -107,21 +122,26 @@ double call_newton_raphson_modificado(double a_funcao, double raiz0, double E) {
 		k++;
 	}
 
-	if (i == 99) printf("\nERRO: O NUMERO MAXIMO DE ITERAÇÕES FOI EXCEDIDA\n");
+  K[0] = k+1;
+
+	if (k == 99) printf("\nO NUMERO MAXIMO DE ITERAÇÕES FOI EXCEDIDA\n\n");
+  
 	f = resolver_f(a_funcao, x_atual);
-    	printf("x%d = %0.20lf f(x%d) = %0.20lf\n\n",i+1,x_atual,i+1,f);	
+  printf("x%d = %0.20lf f(x%d) = %0.20lf\n\n",i+1,x_atual,i+1,f);
+  //printf("Erro Relativo: %0.20lf\n\n",err/x_atual);	
+  ER[0] = err/x_atual;
 
 	return x_atual;
 }
 
 
 // ----------------------  Funçoes para Metodo Secante  ----------------------------
-double call_metodo_secante(double a_funcao, double a_intervalo, double b_intervalo, double E) {
+double call_metodo_secante(double a_funcao, double a_intervalo, double b_intervalo, double E, int* K, double* ER) {
 	
 	printf("\n=========== EXECUCAO SECANTE ===========\n\n\n");
 
 	int k = 0;
-    	int i = 0;
+  int i = 0;
 	double x_anterio, x_atual,err,f;
 
 	err = erro(a_intervalo,b_intervalo);
@@ -152,7 +172,12 @@ double call_metodo_secante(double a_funcao, double a_intervalo, double b_interva
 		
 	}
 
-	if (i == 99) printf("\nERRO: O NUMERO MAXIMO DE ITERAÇÕES FOI EXCEDIDA\n");
+  //printf("\nErro Relativo: %0.20lf\n\n",err/x_atual);	
+  ER[0] = err/x_atual;
+
+  K[0] = k;
+
+	if (k == 99) printf("\nO NUMERO MAXIMO DE ITERAÇÕES FOI EXCEDIDA\n\n");
 	
 	return x_atual;
 }
@@ -224,3 +249,4 @@ double erro(double x_barra_anterior, double x_barra_novo){
 	 */
 	return fabs(x_barra_novo - x_barra_anterior);
 }
+
