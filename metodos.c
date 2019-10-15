@@ -81,7 +81,7 @@ double call_newton_raphson(double a_funcao, double raiz0, double E, int* K, doub
   f = resolver_f(a_funcao, x_atual);
   printf("x%d = %0.20lf f(x%d) = %0.20lf\n\n",i+1,x_atual,i+1,f);
   //printf("Erro Relativo: %0.20lf\n\n",err/x_atual);	
-  ER[0] = err/x_atual;
+  ER[0] = fabs(err/x_atual);
 
 	return x_atual;
 }
@@ -129,7 +129,7 @@ double call_newton_raphson_modificado(double a_funcao, double raiz0, double E, i
 	f = resolver_f(a_funcao, x_atual);
   printf("x%d = %0.20lf f(x%d) = %0.20lf\n\n",i+1,x_atual,i+1,f);
   //printf("Erro Relativo: %0.20lf\n\n",err/x_atual);	
-  ER[0] = err/x_atual;
+  ER[0] = fabs(err/x_atual);
 
 	return x_atual;
 }
@@ -173,7 +173,7 @@ double call_metodo_secante(double a_funcao, double a_intervalo, double b_interva
 	}
 
   //printf("\nErro Relativo: %0.20lf\n\n",err/x_atual);	
-  ER[0] = err/x_atual;
+  ER[0] = fabs(err/x_atual);
 
   K[0] = k;
 
