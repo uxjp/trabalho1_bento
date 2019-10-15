@@ -185,8 +185,11 @@ double call_newton_raphson(double a_funcao, double raiz0, double E, int* K, doub
 	printf("x%d = %0.20lf f(x%d) = %0.20lf\n\n",i+1,x_atual,i+1,f);
 	//printf("Erro Relativo: %0.20lf\n\n",err/x_atual);	
 	
-	ER[0] = fabs(err/x_atual);
-
+	if (x_atual != 0) 
+		ER[0] = fabs(err/x_atual);
+	else 
+		ER[0] = 0;
+		
 	return x_atual;
 }
 
@@ -194,7 +197,9 @@ double newton_raphson(double x_barra, double f, double f_linha) {
 	/*
 	 *Aplicação do método de Newton Raphson
 	 */
-	return x_barra - (f / f_linha);
+	if (f_linha != 0) return x_barra - (f / f_linha);
+	
+	return x_barra;
 }
 
 
@@ -236,8 +241,11 @@ double call_newton_raphson_modificado(double a_funcao, double raiz0, double E, i
 	
 	//printf("Erro Relativo: %0.20lf\n\n",err/x_atual);	
 	
-	ER[0] = fabs(err/x_atual);
-
+	if (x_atual != 0)
+		ER[0] = fabs(err/x_atual);
+	else 
+		ER[0] = 0;
+	
 	return x_atual;
 }
 
@@ -277,8 +285,10 @@ double call_metodo_secante(double a_funcao, double a_intervalo, double b_interva
 	}
 
 	//printf("\nErro Relativo: %0.20lf\n\n",err/x_atual);	
-	ER[0] = fabs(err/x_atual);
-
+	if(x_atual != 0)
+		ER[0] = fabs(err/x_atual);
+	else 
+		ER[0] = 0;
 	K[0] = k;
 
 	if (k == 99) printf("\nO NUMERO MAXIMO DE ITERAÇÕES FOI EXCEDIDA\n\n");
