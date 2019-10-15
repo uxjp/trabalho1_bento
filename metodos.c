@@ -42,7 +42,7 @@ double call_newton_raphson(double a_funcao, double raiz0, double E) {
   	printf("\n======== EXECUCAO NEWTON RAPHSON ========\n\n\n");
 
 	double f, f_linha, err, x_anterio, x_atual;
-	int k = 1;
+	int k = 0;
   	int i=0;
 	
 	f = resolver_f(a_funcao, raiz0);
@@ -52,7 +52,7 @@ double call_newton_raphson(double a_funcao, double raiz0, double E) {
 	
   	printf("x%d = %0.20lf f(x%d) = %0.20lf\n",i,raiz0,i,f);
 
-	while((err > E || fabs(f) > E) && i < 99) {	
+	while((err > E || fabs(f) > E) && k < 99) {	
     		i++;
 		x_anterio = x_atual;
 		f = resolver_f(a_funcao, x_anterio);
@@ -85,7 +85,7 @@ double call_newton_raphson_modificado(double a_funcao, double raiz0, double E) {
     printf("\n=== EXECUCAO NEWTON RAPHSON MODIFICADO ===\n\n\n");
 
 	double f, f_linha, err, x_anterio, x_atual;
-	int k = 1;
+	int k = 0;
   	int i = 0;
 
 	f = resolver_f(a_funcao, raiz0);
@@ -120,22 +120,21 @@ double call_metodo_secante(double a_funcao, double a_intervalo, double b_interva
 	
 	printf("\n=========== EXECUCAO SECANTE ===========\n\n\n");
 
-	int k = 1;
+	int k = 0;
     	int i = 0;
 	double x_anterio, x_atual,err,f;
 
 	err = erro(a_intervalo,b_intervalo);
 
-	printf("x%d = %0.20lf f(x%d) = %0.20lf\n",i,a_intervalo,i,f);
 	f = resolver_f(a_funcao, a_intervalo);
+	printf("x%d = %0.20lf f(x%d) = %0.20lf\n",i,a_intervalo,i,f);
 	i++;
 	f = resolver_f(a_funcao, b_intervalo);
 	printf("x%d = %0.20lf f(x%d) = %0.20lf\n",i,b_intervalo,i,f);
 	i++;
 
 	while((err > E || fabs(f) > E) && k < 99) {
-	    	i++;
-
+	    	
 		x_atual = (numerador_secante(a_funcao, a_intervalo, b_intervalo) / 
 			denominador_secante(a_funcao, a_intervalo, b_intervalo));
 
@@ -148,6 +147,9 @@ double call_metodo_secante(double a_funcao, double a_intervalo, double b_interva
 
     		f = resolver_f(a_funcao, x_atual);
     		printf("x%d = %0.20lf f(x%d) = %0.20lf\n",i,x_atual,i,f);
+		
+		i++;
+		
 	}
 
 	if (i == 99) printf("\nERRO: O NUMERO MAXIMO DE ITERAÇÕES FOI EXCEDIDA\n");
