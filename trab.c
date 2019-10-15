@@ -59,9 +59,11 @@ int main(int argc, char const *argv[]) {
 		Inicia intereração com usuario 
 	*/  
   	printf("=========== PRONTO PARA EXECUCAO ===========\n\n\n\n");
-
-  	printf("INSIRA O ERRO MAXIMO\n");
-  	scanf("%lf",&E);
+	printf("INSIRA O ERRO MAXIMO TAL QUE SEJA POSITIVO MAIOR DO QUE 0\n");
+	do {
+  		scanf("%lf",&E);
+	
+	} while (E <= 0);
 
 
 
