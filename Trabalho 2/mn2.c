@@ -34,11 +34,26 @@ void iniciar(void *matriz, void *vetor){
 		informar_valores_matriz_A(matriz, n);
 		informar_valores_vetor_B(vetor,n);
 
-		call_Gauss_Jacobi(matriz, vetor, n, erro);		
+		if (criterio_de_linhas(matriz, n)) call_Gauss_Jacobi(matriz, vetor, n, erro);
 
 	}else{
 		printf("FALHA AO CRIAR MATRIZ OU AO CRIAR VETOR");
 	}	
+}
+
+bool criterio_de_linhas(void *matriz, int n) {
+	int l, c;
+	double pivo, somatLinha = 0;
+
+	for (l = 0; l < n; ++l) {
+		pivo = abs(matriz[l][l]);
+		
+		for (c = 0; c < n, ++c)  if (c != l) somatLinha += abs(matriz[l][c]);
+
+		if (pivo < somatLinha) return false;
+	}
+	
+	return true;
 }
 
 void call_Gauss_Jacobi(void *matriz_a, void *vetor_b, int n, double erro){
