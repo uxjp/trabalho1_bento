@@ -21,3 +21,4 @@ void call_Gauss_Jacobi(void *matriz_a, void *vetor_b, int n, double erro);
 void *Gauss_Jacobi(void *matriz_a, void *vetor_b, int n, double erro);
 void imprimir_matriz(void *matriz, int n);
 void imprimir_vetor(void *vetor, int n);
+bool criterio_de_linhas(void *matriz, int n);
