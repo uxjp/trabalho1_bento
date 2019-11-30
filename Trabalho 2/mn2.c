@@ -16,6 +16,22 @@ int main(){
 	return 0;
 }
 
+/*
+bool criterio_de_linhas(void *matriz, int n) {
+	int l, c;
+	double pivo, somatLinha = 0;
+
+	for (l = 0; l < n; ++l) {
+		pivo = abs(matriz[l][l]);
+		
+		for (c = 0; c < n, ++c)  if (c != l) somatLinha += abs(matriz[l][c]);
+
+		if (pivo < somatLinha) return false;
+	}
+	
+	return true;
+}
+*/
 
 void iniciar(void *matriz, void *vetor){
 	int n;
