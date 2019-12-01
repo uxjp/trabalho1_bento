@@ -1,3 +1,5 @@
+#include<stdbool.h>
+
 void *criar_vetor(int n);
 void informar_valores_vetor_B(void *vetor, int n);
 void atribuir_vetor(void *vetor, int indice, double valor);
@@ -25,3 +27,4 @@ void *Gauss_Seidel(void *matriz_a, void *vetor_b, int n, double erro);
 void *criar_vetor_x0_gauss_seidel(void *matriz, void *vetor, int n);
 void *criar_vetor_xk_gauss_seidel(void *matriz_a, void *vetor_b, void *vetor_xk, int n);
 void call_Gauss_Seidel(void *matriz_a, void *vetor_b, int n, double erro);
+bool criterio_de_linhas(void *matriz, int n);
