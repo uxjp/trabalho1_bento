@@ -1,13 +1,15 @@
-﻿#include <stdio.h>
+#include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
 #include "mn.h"
+#include<stdbool.h>
 
 int main(){
 
 	void *matriz = NULL; 
 	void *vetor = NULL;		
 	
+
 	iniciar(matriz, vetor);
 
 	liberar_matriz(matriz);
@@ -21,8 +23,48 @@ void iniciar(void *matriz, void *vetor){
 	int n;
 	double erro;	
 
+
 	printf("Informe o erro desejado: ");
 	scanf("%lf",&erro);
+
+  //BENCHMARK
+  printf("\n\n ------- BENCHMARK ------- \n\n\n\n");
+  void *matbenchmark;
+  void *vetbenchmark;
+  int i,j;
+
+  matbenchmark = criar_matriz(3);
+  vetbenchmark = criar_vetor(3);
+
+	atribuir_matriz(matbenchmark, 0, 0, 5, 3);
+  atribuir_matriz(matbenchmark, 0, 1, 3, 3);
+  atribuir_matriz(matbenchmark, 0, 2, 1, 3);
+  atribuir_matriz(matbenchmark, 1, 0, 5, 3);
+  atribuir_matriz(matbenchmark, 1, 1, 6, 3);
+  atribuir_matriz(matbenchmark, 1, 2, 1, 3);
+  atribuir_matriz(matbenchmark, 2, 0, 1, 3);
+  atribuir_matriz(matbenchmark, 2, 1, 6, 3);
+  atribuir_matriz(matbenchmark, 2, 2, 7, 3);
+
+  atribuir_vetor(vetbenchmark, 0, 1);
+  atribuir_vetor(vetbenchmark, 1, 2);
+  atribuir_vetor(vetbenchmark, 2, 3);
+
+  printf("MATRIZ: \n\n");
+  imprimir_matriz(matbenchmark,3);
+  printf("\n\nVetor: \n\n");
+  imprimir_vetor(vetbenchmark,3);
+
+  printf("\n\n\nGAUSS-JACOBI \n\n\n");
+  call_Gauss_Jacobi(matbenchmark, vetbenchmark, 3, erro);
+  printf("\n\n\nGAUSS-SEIDEL \n\n\n");
+  call_Gauss_Seidel(matbenchmark, vetbenchmark, 3, erro);
+
+
+  printf("\n\n ----- FIM BENCHMARK ----- \n\n\n\n");
+
+  // FIM BENCHMARK
+
 
 	printf("Informe a dimensao da matriz: ");
 	scanf("%d",&n);
@@ -34,28 +76,17 @@ void iniciar(void *matriz, void *vetor){
 		informar_valores_matriz_A(matriz, n);
 		informar_valores_vetor_B(vetor,n);
 
-    /*
-    // modifica aki
 
 
-    void *vetorResposta = NULL;
-
-		vetorResposta=Gauss_Jacobi(matriz, vetor, n, erro);		
-    
-
-    printf("Vetor Resposta\n");
-	  imprimir_vetor(vetorResposta, n);	
-	  printf("****************************************\n");
-
-    // ate aki*/
-
-
-    ///*ORIGINAL
+    if (criterio_de_linhas(matriz, n)){
       printf("\n\n\nGAUSS-JACOBI \n\n\n");
     	call_Gauss_Jacobi(matriz, vetor, n, erro);	
       printf("\n\n\nGAUSS-SEIDEL \n\n\n");
       call_Gauss_Seidel(matriz, vetor, n, erro);
-    //*/
+    }
+
+    else printf("Criterio de Linhas nao satisfeito\n");
+
 
 
 	}else{
@@ -98,7 +129,7 @@ void call_Gauss_Jacobi(void *matriz_a, void *vetor_b, int n, double erro){
 	vetorValidar = multiplicar_matriz_com_vetor(matriz_a, vetorResposta, n);
 	vetorDif = vetor_diferenca_entre_dois_vetores(vetor_b, vetorValidar, n);
 
-	printf("****************************************\n");
+	printf("\n****************************************\n");
 	printf("Matriz A\n");
 	imprimir_matriz(matriz_a, n);
 
@@ -541,7 +572,7 @@ void call_Gauss_Seidel(void *matriz_a, void *vetor_b, int n, double erro){
 	vetorValidar = multiplicar_matriz_com_vetor(matriz_a, vetorResposta, n);
 	vetorDif = vetor_diferenca_entre_dois_vetores(vetor_b, vetorValidar, n);
 
-	printf("****************************************\n");
+	printf("\n****************************************\n");
 	printf("Matriz A\n");
 	imprimir_matriz(matriz_a, n);
 
@@ -558,4 +589,21 @@ void call_Gauss_Seidel(void *matriz_a, void *vetor_b, int n, double erro){
 	imprimir_vetor(vetorDif, n);	
 	printf("****************************************\n");
 
+}
+
+
+
+bool criterio_de_linhas(void *matriz, int n) {
+	int l, c;
+	double pivo, somatLinha = 0;
+
+	for (l = 0; l < n; l++) {
+		pivo = fabs(obter_matriz(matriz, l, l, n));
+
+		for (c = 0; c < n; c++)  if (c != l) somatLinha += fabs(obter_matriz(matriz, l, c, n));
+
+		if (pivo < somatLinha) return false;
+	}
+
+	return true;
 }
